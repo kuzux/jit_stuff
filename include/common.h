@@ -9,10 +9,10 @@
 #include <stdio.h>
 #include <string.h>
 
-#ifndef DEBUG
+#ifdef DEBUG
 #define TRACE(msg) { fprintf(stderr, "%s\n", (msg)); }
 #else
-#define TRACE
+#define TRACE(msg) 
 #endif
 
 #define PANIC(msg) { perror(msg); exit(1); }

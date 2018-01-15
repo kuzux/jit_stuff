@@ -1,7 +1,6 @@
 TARGET := prog
 
-CFLAGS := -MMD -MP -Iinclude -Wall -Werror -Wpedantic
-LDFLAGS :=
+CFLAGS := -MMD -MP -Iinclude -Wall -Werror 
 
 ifdef RELEASE
 	CFLAGS += -O2

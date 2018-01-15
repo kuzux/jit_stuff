@@ -13,6 +13,7 @@ void buffer_free(buffer_t*);
 
 bool buffer_checked_at(buffer_t*, size_t, uint8_t*);
 uint8_t buffer_unchecked_at(buffer_t*, size_t);
+bool buffer_checked_put(buffer_t*, size_t, uint8_t);
 
 #endif
 
