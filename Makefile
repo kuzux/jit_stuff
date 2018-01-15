@@ -1,6 +1,7 @@
 TARGET := prog
 
-CFLAGS := -MMD -MP -Iinclude 
+CFLAGS := -MMD -MP -Iinclude -Wall -Werror -Wpedantic
+LDFLAGS :=
 
 ifdef RELEASE
 	CFLAGS += -O2
@@ -8,20 +9,23 @@ else
 	CFLAGS += -g -DDEBUG
 endif
 
-SRCS := $(wildcard *.c)
-OBJS := $(SRCS:.c=.o)
-DEPS := $(SRCS:.c=.d)
+SRCS := $(wildcard src/*.c)
+OBJS := $(addprefix dest/, $(notdir $(SRCS:.c=.o)))
+DEPS := $(OBJS:.o=.d)
 
-$(TARGET): $(OBJS)
+dest/$(TARGET): $(OBJS)
 	$(CC) $(OBJS) -o $@ $(LDFLAGS)
 
-%.o: %c
+dest/%.o: src/%.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
 .PHONY: clean
 
 -include $(DEPS)
 
+all: $(TARGET)
+
 clean:
-	rm $(OBJS) $(DEPS) $(TARGET)
+	rm -r dest
+	mkdir -p dest
 

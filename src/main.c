@@ -1,29 +1,10 @@
-#include <stddef.h>
-#include <stdint.h>
-#include <stdbool.h>
-
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <errno.h>
-
 #include <unistd.h>
 #include <sys/mman.h>
 
+#include <common.h>
 #include <buffer.h>
 
 #define BUFSIZE 4096
-
-#ifdef DEBUG
-#define TRACE(x) { fprintf(stderr, "%s\n", (x)); }
-#else
-#define TRACE /* TRACE no-op */
-#endif
-
-typedef struct {
-    uint8_t* buf;
-    size_t buflen;
-} buffer_t;
 
 typedef struct {
     int32_t* data;
