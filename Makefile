@@ -1,6 +1,12 @@
 TARGET := prog
 
-CFLAGS := -MMD -MP -Iinclude
+CFLAGS := -MMD -MP -Iinclude 
+
+ifdef RELEASE
+	CFLAGS += -O2
+else 
+	CFLAGS += -g -DDEBUG
+endif
 
 SRCS := $(wildcard *.c)
 OBJS := $(SRCS:.c=.o)
