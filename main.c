@@ -10,9 +10,9 @@
 #include <unistd.h>
 #include <sys/mman.h>
 
-#define BUFSIZE 4096
+#include <buffer.h>
 
-#define DEBUG
+#define BUFSIZE 4096
 
 #ifdef DEBUG
 #define TRACE(x) { fprintf(stderr, "%s\n", (x)); }
