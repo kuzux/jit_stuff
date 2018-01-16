@@ -10,6 +10,15 @@
 
 size_t generate_code(buffer_t* buf, size_t numslen, int32_t* nums) {
     size_t pos = 0;
+
+    // push rbp
+    buffer_checked_put(buf, pos++, 0x55);
+
+    // mov rbp, rsp 
+    buffer_checked_put(buf, pos++, 0x48);
+    buffer_checked_put(buf, pos++, 0x89);
+    buffer_checked_put(buf, pos++, 0xe5);
+
     for(size_t i=0; i<numslen-1 && pos<buf->buflen; i++) {
         // mov eax
         buffer_checked_put(buf, pos++, 0xb8);
@@ -34,6 +43,15 @@ size_t generate_code(buffer_t* buf, size_t numslen, int32_t* nums) {
         buffer_checked_put(buf, pos++, 0xd8);
     }
 
+    // mov rsp, rbp
+    buffer_checked_put(buf, pos++, 0x48);
+    buffer_checked_put(buf, pos++, 0x89);
+    buffer_checked_put(buf, pos++, 0xec);
+
+    // pop rbp
+    buffer_checked_put(buf, pos++, 0x5d);
+
+    // ret
     buffer_checked_put(buf, pos++, 0xc3);
 
     return pos;
@@ -76,6 +94,8 @@ int main(int argc, char** argv) {
 
     int res = fn();
     printf("result = %d\n", res);
+
+    text_set_mode(code, TEXTMODE_RW);
 
     text_free(code);
     buffer_free(code_buf);

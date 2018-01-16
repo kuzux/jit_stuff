@@ -6,4 +6,5 @@ a.out
 main
 prog
 dest/
+asm/*.o
 

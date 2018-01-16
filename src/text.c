@@ -33,12 +33,13 @@ text_t* text_new(size_t buflen) {
 }
 
 bool text_populate(text_t* text, buffer_t* buf, size_t len) {
-    if(len > text->alloc_len) {
+    if(text->code_len + len > text->alloc_len) {
+        // TODO reallocate the buffer here
         return false;
     }
 
-    memcpy(text->buf, buf->buf, len);
-    text->code_len = len;
+    memcpy(text->buf+text->code_len, buf->buf, len);
+    text->code_len += len;
 
     return true;
 }
