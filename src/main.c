@@ -19,16 +19,16 @@ size_t generate_code(buffer_t* buf, size_t numslen, int32_t* nums) {
     buffer_checked_put(buf, pos++, 0x89);
     buffer_checked_put(buf, pos++, 0xe5);
 
-    for(size_t i=0; i<numslen-1 && pos<buf->buflen; i++) {
-        // mov eax
-        buffer_checked_put(buf, pos++, 0xb8);
+    // push rdi
+    buffer_checked_put(buf, pos++, 0x57);
+    // push rsi
+    buffer_checked_put(buf, pos++, 0x56);
 
-        // put in that number
-        buffer_checked_put(buf, pos++, (nums[i] & 0x000000FF));
-        buffer_checked_put(buf, pos++, (nums[i] & 0x0000FF00) >> 8);
-        buffer_checked_put(buf, pos++, (nums[i] & 0x00FF0000) >> 16);
-        buffer_checked_put(buf, pos++, (nums[i] & 0xFF000000) >> 24);
+    // xor eax, eax (this zeroes the register)
+    buffer_checked_put(buf, pos++, 0x31);
+    buffer_checked_put(buf, pos++, 0xc0);
 
+    for(size_t i=0; i<numslen && pos<buf->buflen; i++) {
         // mov ebx
         buffer_checked_put(buf, pos++, 0xbb);
 
@@ -42,6 +42,11 @@ size_t generate_code(buffer_t* buf, size_t numslen, int32_t* nums) {
         buffer_checked_put(buf, pos++, 0x01);
         buffer_checked_put(buf, pos++, 0xd8);
     }
+    
+    // pop rsi
+    buffer_checked_put(buf, pos++, 0x5e);
+    // pop rdi
+    buffer_checked_put(buf, pos++, 0x5f);
 
     // mov rsp, rbp
     buffer_checked_put(buf, pos++, 0x48);
